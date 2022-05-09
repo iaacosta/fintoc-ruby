@@ -30,7 +30,7 @@ module Fintoc
       proc do |resource, **kwargs|
         parameters = params(method, **kwargs)
         response = make_request(method, resource, parameters)
-        content = JSON.parse(response.body, symbolize_names: true)
+        content = response.body.empty? ? nil : JSON.parse(response.body, symbolize_names: true)
 
         if response.status.client_error? || response.status.server_error?
           raise_custom_error(content[:error])
